@@ -18,13 +18,26 @@ const Test = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [isActive, setIsActive] = useState(false); 
+  const [timer, setTimer] = useState(90);
 
   useEffect(() => {
     const check = Cookies.get("spage2");
+
     if (!check || check == "false") {
       navigate("/login");
     }
+    
   }, []);
+  
+  useEffect(() => {
+    if(timer===0){
+      Cookies.remove("spage2");
+      Cookies.set("spage4", true);
+      navigate("/thankyou");
+    }
+  }, [timer])
+  
 
   const category = useSelector((state) => state.quesList.quesCategory);
   useEffect(() => {
@@ -42,6 +55,40 @@ const Test = () => {
         toast.error("Something went wrong");
       });
   }, [category]);
+
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+       
+        setIsActive(true);
+      } else {
+        
+        setIsActive(false);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    let interval;
+    if (isActive && timer>0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer -1 ); 
+        document.title = `InActive Tab - Countdown: ${timer}s`;
+      }, 1000);
+    } else {
+      clearInterval(interval);
+      document.title = 'CSI Exam Portal';
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isActive, timer]);
+
   return loading ? (
     <Loader />
   ) : (
