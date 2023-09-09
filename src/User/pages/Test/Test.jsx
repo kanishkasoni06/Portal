@@ -31,10 +31,20 @@ const Test = () => {
   }, []);
   
   useEffect(() => {
+
     if(timer===0){
+      axios
+      .post(
+        `${
+          import.meta.env.VITE_APP_DJANGO_URL
+        }/accounts/submit/${localStorage.getItem("studentNo")}`
+      )
+      .then(() => {
       Cookies.remove("spage2");
       Cookies.set("spage4", true);
       navigate("/thankyou");
+      })
+      
     }
   }, [timer])
   
@@ -75,10 +85,22 @@ const Test = () => {
 
   useEffect(() => {
     let interval;
-    if (isActive && timer>0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer -1 ); 
-        document.title = `InActive Tab - Countdown: ${timer}s`;
+    if (isActive) {
+      let timerTemp;
+        interval = setInterval(() => {
+        const time = localStorage.getItem('timer')
+        if(time>0){
+          timerTemp = time
+        }
+        else{
+          timerTemp = 90
+          localStorage.setItem('timer',timer)
+        }
+        timerTemp -= 1
+        console.log(timerTemp)
+        setTimer(timerTemp)
+        localStorage.setItem('timer',timerTemp ); 
+        document.title = `InActive Tab - Countdown: ${timerTemp}s`;
       }, 1000);
     } else {
       clearInterval(interval);
