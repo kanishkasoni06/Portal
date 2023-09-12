@@ -22,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const GetQuestions = () => {
   const category = useSelector((state) => state.quesList.quesCategory);
+
   const questionDisplay = useSelector((state) => state.quesList);
   const showEdit = useSelector((state) => state.editShow);
   const [correctAns, setCorrectAns] = useState();
@@ -30,6 +31,7 @@ const GetQuestions = () => {
 
   useEffect(() => {
     setCircleLoader(true);
+
     axios
       .get(`${import.meta.env.VITE_APP_NODE_URL}/category/${category}`)
       // .get(`${import.meta.env.VITE_APP_NODE_URL}/getquestions`)
@@ -70,6 +72,7 @@ const GetQuestions = () => {
     console.log(
       questionDisplay?.initialQues[questionDisplay.initialQuesNo - 1]
     );
+
     let options =
       questionDisplay?.initialQues[questionDisplay.initialQuesNo - 1]?.options;
     let correctId =
@@ -83,12 +86,14 @@ const GetQuestions = () => {
   ]);
 
   const delQuestion = (id) => {
+
     setCircleLoader(true);
     axios
       .delete(`${import.meta.env.VITE_APP_NODE_URL}/deletequestions/${id}`)
       .then(() => {
         //   console.log(res)
         dispatch(prevQues())
+
 
         toast.success("Question deleted successfully");
         axios

@@ -115,6 +115,7 @@ const AddCandidates = () => {
 
 
   return (
+    <>
     <div>
     <div>
       <Header />

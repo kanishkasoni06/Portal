@@ -74,6 +74,7 @@ const Login = ({ handleLogin }) => {
       .post(`${import.meta.env.VITE_APP_DJANGO_URL}/accounts/login/`, values)
       .then((res) => {
         setLoader(false);
+
         // console.log(res);
         Cookies.set("isLoggedIn", true); // Set isLoggedIn cookie
         isLoggedin = true;

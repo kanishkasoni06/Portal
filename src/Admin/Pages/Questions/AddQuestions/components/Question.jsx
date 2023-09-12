@@ -206,6 +206,12 @@ const Question = () => {
           </MenuItem>
         </Select>
       </FormControl>
+      <div
+        className="absolute top-0"
+        style={{ marginLeft: "-2rem", display: loader ? "" : "none" }}
+      >
+        <Loader />
+      </div>
 
       <ToastContainer />
     </div>
